@@ -1,0 +1,13 @@
+{
+  "name": "multimedia_db",
+  "version": "0.1.0",
+  "description": "Client for querying our incredible multimedia DB",
+  "author": "Passau Dade <[email protected]>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
