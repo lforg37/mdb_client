@@ -1,15 +1,13 @@
-FROM node:alpine
+FROM python:3-alpine
 
-RUN 	mkdir -p /usr/src/app ; \
-	mkdir -p /tmp/images
+COPY app/ /app/
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY app/package.json /usr/src/app/
+RUN pip install -r /app/requirements.txt
 
-RUN npm install
+ENTRYPOINT ["python"]
 
-COPY app/* /usr/src/app/
+CMD ["app.py"]
 
 EXPOSE 8080
-CMD ["npm", "start"]
