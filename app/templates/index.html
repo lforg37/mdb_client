@@ -13,10 +13,43 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     
     <link rel="stylesheet" href="{{url_for('css_static', filename='style.css')}}">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+      #custom-handle {
+      width: 3em;
+      height: 1.6em;
+      top: 50%;
+      margin-top: -.8em;
+      text-align: center;
+      line-height: 1.6em;
+      }
+      
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+      $( function() {
+      var handle = $( "#custom-handle" );
+      $( "#slider" ).slider({
+      range: "true",
+      value: "50",
+      create: function() {
+      $("#similarity_wanted").val(15* $( this ).slider( "value" )/100);
+      handle.text(15* $( this ).slider( "value" )/100 );
+      },
+      slide: function( event, ui ) {
+      var calc_val = 15*ui.value/100;
+      handle.text( calc_val);
+      $("#similarity_wanted").val(calc_val);
+      }
+      });
+      } );
+    </script>
   </head>
   
   <body style="background-color: GhostWhite ;">
     <div class="container">
+
       <div class="row" style="margin-bottom: 10px;">
 	<section>
 	  <form id="uploadform" method="post" enctype="multipart/form-data">
@@ -24,9 +57,16 @@
 	      <label class="fileContainer">
 		Upload an image !
 		<input id="file_source" name="file_source" type="file">
+		<input id="similarity_wanted" type="hidden" name="similarity_wanted">
 	      </label>
 	    </div>
+	    <div class="col-offset-md-3 col-md-12" style="margin-top: 15px ;  margin-bottom: 15px;">
+	    <div id="slider">
+		<div id="custom-handle" class="ui-slider-handle"></div>
+	    </div>
+	    </div>
 	    <button id="submit" type="button" style="display: none;" >Upload</button>
+	    
 	    <div class="col-md-6">
 	      <img id="image_source" src="#" class="img-responsive img-rounded " style="display: none;" />
 	    </div>
@@ -44,7 +84,7 @@
 	  </form>
 	</section>
       </div>
-
+      
       <div class="row">
 	<div id="results_div" style="display: none;">
 	  <div class="panel panel-success">
@@ -58,6 +98,7 @@
       </div>
     </div>
 
+    
 <script src="{{url_for('js_static', filename='app.js')}}"></script>
 </body>
 </html>

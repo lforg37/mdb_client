@@ -1,7 +1,7 @@
 $(function() {
     $('#submit').click(function(event) {
         event.preventDefault();
-        var form_data = new FormData($('#uploadform')[0]);
+        var form_data = form_data = new FormData($('#uploadform')[0]);
 	$("#results").empty();
         $.ajax({
             type: 'POST',
