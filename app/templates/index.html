@@ -1,104 +1,110 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
+
     <meta charset="utf-8">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <title>Grayscale - Start Bootstrap Theme</title>
 
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="{{url_for('css_static', filename='bootstrap.min.css')}}">
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="{{url_for('css_static', filename='font-awesome.min.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="{{url_for('css_static', filename='grayscale.css')}}">
     
-    <link rel="stylesheet" href="{{url_for('css_static', filename='style.css')}}">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
     <style>
-      #custom-handle {
-      width: 3em;
-      height: 1.6em;
-      top: 50%;
-      margin-top: -.8em;
-      text-align: center;
-      line-height: 1.6em;
-      }
-      
+    .btn-xlarge {
+    padding: 20px 38px;
+    font-size: 26px; //change this to your desired size
+    line-height: normal;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+    color: #555;
+	}
+	
+	.fond_noir {
+		background: #000;
+	}
+	
+	.navbar-header li a {
+    line-height: 150px;
+    height: 150px;
+    padding-top: 0;
+}
     </style>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-      $( function() {
-      var handle = $( "#custom-handle" );
-      $( "#slider" ).slider({
-      range: "true",
-      value: "50",
-      create: function() {
-      $("#similarity_wanted").val(15* $( this ).slider( "value" )/100);
-      handle.text(15* $( this ).slider( "value" )/100 );
-      },
-      slide: function( event, ui ) {
-      var calc_val = 15*ui.value/100;
-      handle.text( calc_val);
-      $("#similarity_wanted").val(calc_val);
-      }
-      });
-      } );
-    </script>
-  </head>
-  
-  <body style="background-color: GhostWhite ;">
-    <div class="container">
 
-      <div class="row" style="margin-bottom: 10px;">
-	<section>
-	  <form id="uploadform" method="post" enctype="multipart/form-data">
-	    <div class="col-offset-md-3 col-md-12">
-	      <label class="fileContainer">
-		Upload an image !
-		<input id="file_source" name="file_source" type="file">
-		<input id="similarity_wanted" type="hidden" name="similarity_wanted">
-	      </label>
-	    </div>
-	    <div class="col-offset-md-3 col-md-12" style="margin-top: 15px ;  margin-bottom: 15px;">
-	    <div id="slider">
-		<div id="custom-handle" class="ui-slider-handle"></div>
-	    </div>
-	    </div>
-	    <button id="submit" type="button" style="display: none;" >Upload</button>
-	    
-	    <div class="col-md-6">
-	      <img id="image_source" src="#" class="img-responsive img-rounded " style="display: none;" />
-	    </div>
-	    <div class="col-md-6">
-	      <div id="properties" style="display: none;">
-		<div class="panel panel-success">
-		  <div class="panel-body">
-		    <span class="label label-success">
-		      Size : 12
-		    </span>
-		  </div>
-		</div>
-	      </div>
-	    </div>
-	  </form>
-	</section>
-      </div>
-      
-      <div class="row">
-	<div id="results_div" style="display: none;">
-	  <div class="panel panel-success">
-	    <div class="panel-heading"><h4>Similar images :</h4></div>
-	    <div class="panel-body">
-	      <section id="results">
-	      </section>
-	    </div>
-	  </div>
-	</div>
-      </div>
-    </div>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    <!-- Navigation -->
+    <nav class="fond_noir" class="navbar navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+            </div>
+            <div>
+			<img class="img-responsive" src="/static/img/logo_uni.png" style="height: 56px" alt="">
+			</div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Intro Header -->
+    <header class="intro">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h1 class="brand-heading">MFDP</h1>
+                        	<form id="uploadform" method="post"  action="/upload" enctype="multipart/form-data" style="display: none;">
+								<label class="fileContainer">
+									<input id="file_source" name="file_source" type="file" type="file" accept="image/png, image/jpeg, image/gif"> 
+								</label>
+								<input id="submit" type="submit" value="Submit"  style="display: none;">
+							  </form>
+                        <button id="trigered_button" type="button" class="btn-xlarge btn btn-warning btn-primary">Choose a picture</button>
+                        <p class="intro-text">Search images based on similarity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="{{url_for('js_static', filename='jquery.js')}}"></script>
     
-<script src="{{url_for('js_static', filename='app.js')}}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script type="text/javascript" src="{{url_for('js_static', filename='bootstrap.min.js')}}"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script type="text/javascript" src="{{url_for('js_static', filename='grayscale.js')}}"></script>
+    
+    <script type="text/javascript" src="{{url_for('js_static', filename='app.js')}}"></script>
+
 </body>
+
 </html>

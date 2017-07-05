@@ -4,6 +4,7 @@ from flask import (
     render_template,
     send_from_directory,
     url_for,
+    redirect,
     jsonify
 )
 from werkzeug import secure_filename
@@ -77,10 +78,9 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def uploadfile():
     if request.method == 'POST':
-        similarity_wanted = request.form['similarity_wanted']
         files = request.files['file_source']
         if files and allowed_file(files.filename):
             filename_source = secure_filename(files.filename)
@@ -89,10 +89,10 @@ def uploadfile():
             files.save(os.path.join(updir, filename_source))
             file_size = os.path.getsize(os.path.join(updir, filename_source))
 
-            #results = get_results()
-            results = []
+            results = get_results()
             
-            #os.remove(os.path.join(updir, filename_source))
+            os.remove(os.path.join(updir, filename_source))
+            return render_template('results.html', results=[e.serialize() for e in results])
             return jsonify(name=filename_source, size=file_size, results=[e.serialize() for e in results])
 
 def get_results():
