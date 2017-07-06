@@ -9,6 +9,7 @@ from flask import (
 )
 from werkzeug import secure_filename
 import os
+import cx_Oracle as ctx
 
 class Result:
     def __init__(self, path, similarity):
@@ -86,20 +87,23 @@ def uploadfile():
             filename_source = secure_filename(files.filename)
             app.logger.info('FileName: ' + filename_source)
             updir = os.path.join(basedir, 'upload/')
-            files.save(os.path.join(updir, filename_source))
-            file_size = os.path.getsize(os.path.join(updir, filename_source))
+            filename = os.path.join(updir, filename_source)
+            files.save(filename)
 
-            results = get_results()
+            results = get_results(filename)
             
-            os.remove(os.path.join(updir, filename_source))
+            os.remove(filename)
             return render_template('results.html', results=[e.serialize() for e in results])
             return jsonify(name=filename_source, size=file_size, results=[e.serialize() for e in results])
 
-def get_results():
-    fake_results = []
-    for filename in os.listdir(os.path.join(basedir, "fake_results/")):
-        fake_results.append(Result(filename, 1))
-    return fake_results
+def get_results(filename):
+    con = ctx.connect('user_mmdb/user_mmdb@oraclemdb:1521/orcl')
+    cur = con.cursor()
+    cur.execute('SELECT FILE_PATH AS fp, Similarity(fp, {}) AS sim FROM IMAGES_TABLE ORDER BY sim DESC LIMIT 30'.format(filename));
+
+    results = [Result(r[0], r[1]) for r in cur] 
+    
+    return results
 
 
 if __name__ == '__main__':
