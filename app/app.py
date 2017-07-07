@@ -13,12 +13,11 @@ import cx_Oracle as ctx
 import socket
 
 class Result:
-    def __init__(self, path, similarity):
-        self.url = url_for('img_static', filename=path)
-        self.similarity = similarity
+    def __init__(self, path):
+        self.url = path
 
     def serialize(self):
-        return render_template("result.html", url=self.url, similarity=self.similarity)
+        return render_template("result.html", url=self.url)
     
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -33,9 +32,6 @@ app.logger.addHandler(handler)
 
 
 app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'jpeg', 'gif'])
-
-f = open("loglog.txt", "w")
-
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -72,15 +68,8 @@ def js_static(filename):
     return send_from_directory(app.root_path + '/static/js/', filename)
 
 
-@app.route('/img/<path:filename>')
-def img_static(filename):
-    return send_from_directory(app.root_path + '/fake_results/', filename)
-
-
 @app.route('/')
 def index():
-    f.write("bloublou\n")
-    f.flush()
     return render_template('index.html')
 
 
@@ -97,7 +86,7 @@ def uploadfile():
 
             results = get_results(filename)
             
-            #os.remove(filename)
+            os.remove(filename)
             return render_template('results.html', results=[e.serialize() for e in results])
             return jsonify(name=filename_source, size=file_size, results=[e.serialize() for e in results])
 
@@ -105,14 +94,11 @@ def get_results(filename):
     con = ctx.connect('user_mmdb/user_mmdb@oramdb')
     cur = con.cursor()
 
-    query = "select * from ( SELECT FILE_PATH, SYS.SimilarityOperator(file_path, '{0}') as sim from SYS.images_table where SYS.SimilarityOperator(file_path, '{0}') > 0 order by sim asc) where rownum < 30".format(filename)
+    query = "Select file_path from (SELECT FILE_PATH from SYS.images_table where SYS.SimilarityOperator(file_path, '{0}') > 0 ) where rownum <= 32 ".format(filename)
     
-    f.write("Query : {}".format(query))
-    f.flush()
-
     cur.execute(query);
 
-    results = [Result(r[0], r[1]) for r in cur] 
+    results = [Result(r[0]) for r in cur] 
     
     return results
 
