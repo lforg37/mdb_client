@@ -10,6 +10,7 @@ from flask import (
 from werkzeug import secure_filename
 import os
 import cx_Oracle as ctx
+import socket
 
 class Result:
     def __init__(self, path, similarity):
@@ -32,6 +33,8 @@ app.logger.addHandler(handler)
 
 
 app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg', 'jpeg', 'gif'])
+
+f = open("loglog.txt", "w")
 
 
 def allowed_file(filename):
@@ -76,6 +79,8 @@ def img_static(filename):
 
 @app.route('/')
 def index():
+    f.write("bloublou\n")
+    f.flush()
     return render_template('index.html')
 
 
@@ -92,14 +97,20 @@ def uploadfile():
 
             results = get_results(filename)
             
-            os.remove(filename)
+            #os.remove(filename)
             return render_template('results.html', results=[e.serialize() for e in results])
             return jsonify(name=filename_source, size=file_size, results=[e.serialize() for e in results])
 
 def get_results(filename):
-    con = ctx.connect('user_mmdb/user_mmdb@oraclemdb:1521/orcl')
+    con = ctx.connect('user_mmdb/user_mmdb@oramdb')
     cur = con.cursor()
-    cur.execute('SELECT FILE_PATH AS fp, Similarity(fp, {}) AS sim FROM IMAGES_TABLE ORDER BY sim DESC LIMIT 30'.format(filename));
+
+    query = "select * from ( SELECT FILE_PATH, SYS.SimilarityOperator(file_path, '{0}') as sim from SYS.images_table where SYS.SimilarityOperator(file_path, '{0}') > 0 order by sim asc) where rownum < 30".format(filename)
+    
+    f.write("Query : {}".format(query))
+    f.flush()
+
+    cur.execute(query);
 
     results = [Result(r[0], r[1]) for r in cur] 
     
