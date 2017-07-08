@@ -58,6 +58,10 @@ def dated_url_for(endpoint, **values):
             values['q'] = int(os.stat(file_path).st_mtime)
     return url_for(endpoint, **values)
 
+@app.route('/corel-10k/<path:filename>')
+def get_corel_image(filename):
+    return send_from_directory('/corel-10k/', filename)
+
 @app.route('/css/<path:filename>')
 def css_static(filename):
     return send_from_directory(app.root_path + '/static/css/', filename)
