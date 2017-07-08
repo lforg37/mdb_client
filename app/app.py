@@ -13,9 +13,8 @@ import cx_Oracle as ctx
 import socket
 
 class Result:
-    def __init__(self, path, distance):
+    def __init__(self, path):
         self.url = path
-        self.distance = distance
 
     def serialize(self):
         return render_template("result.html", url=self.url, distance=self.distance)
@@ -95,11 +94,11 @@ def get_results(filename):
     con = ctx.connect('user_mmdb/user_mmdb@oramdb')
     cur = con.cursor()
 
-    query = "Select * from (SELECT FILE_PATH, SYS.SimilarityOperator(file_path, '{0}') from SYS.images_table where SYS.SimilarityOperator(file_path, '{0}') > 0 ) where rownum <= 32 ".format(filename)
+    query = "Select * from (SELECT FILE_PATH from SYS.images_table where SYS.SimilarityOperator(file_path, '{0}') > 0 ) where rownum <= 32 ".format(filename)
     
     cur.execute(query);
 
-    results = [Result(r[0], round(r[1], 2)) for r in cur] 
+    results = [Result(r[0]) for r in cur] 
     
     return results
 
