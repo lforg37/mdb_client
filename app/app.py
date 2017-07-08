@@ -17,7 +17,7 @@ class Result:
         self.url = path
 
     def serialize(self):
-        return render_template("result.html", url=self.url, distance=self.distance)
+        return render_template("result.html", url=self.url)
     
 basedir = os.path.abspath(os.path.dirname(__file__))
 
