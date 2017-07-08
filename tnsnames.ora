@@ -1,0 +1,9 @@
+ORAMDB = 
+ (DESCRIPTION =
+   (ADDRESS_LIST =
+     (ADDRESS = (PROTOCOL = TCP)(HOST = oraclemdb)(PORT = 1521))
+   )
+   (CONNECT_DATA = 
+     (SID = ORCL)
+   )
+)

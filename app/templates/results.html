@@ -49,6 +49,14 @@ background: transparent;
 text-align:center;
 }
 
+.fond_noir {
+background: #000;
+}
+
+.thumbnail {
+    border: 0 none;
+    box-shadow: none;
+}
     </style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -62,28 +70,20 @@ text-align:center;
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">MFDP</a>
-		<div>
-		  <button type="button" class="btn btn-warning flush-right"><a href="/" >Warning</a></button>
-		</div>
-            </div>
-
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
+<nav class="fond_noir navbar navbar-fixed-top" role="navigation">
+<div class="container">
+  <div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav navbar-left">
+        <a class="nav navbar-nav navbar-left" href="/">
+	<h3 style="color: #777; font-weight: bold;">MFDP</h3>
+	</a>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <a href="/" class="btn btn-warning flush-right navbar-btn" role="button">New search</a>
+    </ul>
+  </div>
+ </div>
+</nav>
     <!-- Page Content -->
     <div class="container">
 

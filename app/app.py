@@ -13,11 +13,12 @@ import cx_Oracle as ctx
 import socket
 
 class Result:
-    def __init__(self, path):
+    def __init__(self, path, distance):
         self.url = path
+        self.distance = distance
 
     def serialize(self):
-        return render_template("result.html", url=self.url)
+        return render_template("result.html", url=self.url, distance=self.distance)
     
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -94,11 +95,11 @@ def get_results(filename):
     con = ctx.connect('user_mmdb/user_mmdb@oramdb')
     cur = con.cursor()
 
-    query = "Select file_path from (SELECT FILE_PATH from SYS.images_table where SYS.SimilarityOperator(file_path, '{0}') > 0 ) where rownum <= 32 ".format(filename)
+    query = "Select * from (SELECT FILE_PATH, SYS.SimilarityOperator(file_path, '{0}') from SYS.images_table where SYS.SimilarityOperator(file_path, '{0}') > 0 ) where rownum <= 32 ".format(filename)
     
     cur.execute(query);
 
-    results = [Result(r[0]) for r in cur] 
+    results = [Result(r[0], round(r[1], 2)) for r in cur] 
     
     return results
 
