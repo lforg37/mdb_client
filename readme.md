@@ -5,6 +5,9 @@ this web page offers a way to get similar images from an input image given by th
 
 ## Installation
 
+''' docker-compose up --build '''
+
 ## Usage
+Go to localhost:8080 on your web browser and have fun !
 
 [1] http://flask.pocoo.org/
