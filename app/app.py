@@ -60,7 +60,7 @@ def dated_url_for(endpoint, **values):
 
 @app.route('/corel-10k/<path:filename>')
 def get_corel_image(filename):
-    return send_from_directory('/corel-10k/', filename)
+    return send_from_directory(app.root_path + '/corel-10k/', filename)
 
 @app.route('/css/<path:filename>')
 def css_static(filename):
