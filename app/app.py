@@ -76,13 +76,27 @@ def js_static(filename):
 def index():
     return render_template('index.html')
 
+import threading
+class FilenameLock:
+    def __init__(self):
+        self.lock = threading.Lock()
+        self.index = 0
+
+    def get_filename(self):
+        self.lock.acquire()
+        self.index += 1
+        filename = "filename{}.jpg".format(self.index)
+        self.lock.release()
+        return filename
+
+filename_lock = FilenameLock()
 
 @app.route('/upload', methods=['GET', 'POST'])
 def uploadfile():
     if request.method == 'POST':
         files = request.files['file_source']
         if files and allowed_file(files.filename):
-            filename_source = secure_filename(files.filename)
+            filename_source = filename_lock.get_filename()
             app.logger.info('FileName: ' + filename_source)
             updir = os.path.join(basedir, 'upload/')
             filename = os.path.join(updir, filename_source)
@@ -108,4 +122,4 @@ def get_results(filename):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8080, threaded=True)
